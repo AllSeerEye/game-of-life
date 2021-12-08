@@ -4,8 +4,18 @@ let rows;
 
 let w = 20;
 
+let paused = false;
+let pauseText = "Pause";
+
+let b;
+
+function preload() {
+  b = createButton(pauseText);
+  b.mousePressed(changePause);
+}
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight - 40);
 
   cols = floor(width / w);
   rows = floor(height / w);
@@ -15,7 +25,11 @@ function setup() {
   grid = make2DArray(cols, rows); // Make the grid
 }
 
-function draw() {
+function changePause() {
+  paused = !paused;
+}
+
+function gol() {
   background(220);
   generate(); // New generation
 
@@ -28,6 +42,16 @@ function draw() {
       rect(x, y, w, w);
     }
   }
+}
+
+function draw() {
+  if (!paused) {
+    gol();
+  }
+
+  pauseText = paused == true ? "Unpause" : "Pause";
+
+  b.html(pauseText);
 }
 
 function generate() { // Makes the next generation
@@ -73,8 +97,8 @@ function checkNeighbors(x, y) { // Returns the number of neighbors of a cell
       }
 
       if (cellY < 0) {
-        cellY = grid.length - 1;
-      } else if (cellY > grid.length - 1) {
+        cellY = grid[0].length - 1;
+      } else if (cellY > grid[0].length - 1) {
         cellY = 0;
       }
 
@@ -97,4 +121,26 @@ function make2DArray(cols, rows) { // Just to make life easier
   }
 
   return arr;
+}
+
+function mousePressed() {
+  if (paused) {
+    let currentX = floor(map(mouseX, 0, width, 0, cols));
+    let currentY = floor(map(mouseY, 0, height, 0, rows));
+    if (grid[currentX][currentY] == 0) {
+      grid[currentX][currentY] = 1;
+      fill(0);
+      rect(currentX * w, currentY * w, w, w);
+    } else {
+      grid[currentX][currentY] = 0;
+      fill(255);
+      rect(currentX * w, currentY * w, w, w);
+    }
+  }
+}
+
+function keyPressed() {
+  if (keyCode === 82) {
+    setup();
+  }
 }

@@ -1,5 +1,5 @@
 # Game of Life
-The Game of Life cellular automata (automaton??) written in Javascript using p5.js
+The Game of Life cellular automata (automaton??) written in Javascript using p5.js in around 150 lines of code.
 
 ## Rules
 The Game of Life has the following rules
