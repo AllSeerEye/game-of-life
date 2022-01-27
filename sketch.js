@@ -8,10 +8,13 @@ let paused = false;
 let pauseText = "Pause";
 
 let b;
+let clearBtn;
 
 function preload() {
   b = createButton(pauseText);
+  clearBtn = createButton("Clear");
   b.mousePressed(changePause);
+  clearBtn.mousePressed(clr);
 }
 
 function setup() {
@@ -27,6 +30,21 @@ function setup() {
 
 function changePause() {
   paused = !paused;
+}
+
+function clr() {
+	if (paused) {
+		for (let i = 0; i < grid.length; i++) {
+			for (let j = 0; j < grid[i].length; j++) {
+				grid[i][j] = 0;
+				let x = i * w;
+     			let y = j * w;
+
+				 fill(255);
+				 rect(x, y, w, w);
+			}
+		}
+	}
 }
 
 function gol() {
